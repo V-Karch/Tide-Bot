@@ -29,6 +29,12 @@ async def main():
 
     bot: commands.Bot = commands.Bot(**bot_kwargs)
 
+    @bot.command(name="sync")
+    async def sync(context: commands.Context):
+        if context.author.id == 923600698967461898:
+            await bot.tree.sync()
+            await context.reply("Syncing application commands...")
+
     token = read_token()
 
     for cog in os.listdir("cogs"):
