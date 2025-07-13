@@ -1,4 +1,6 @@
+import os
 import typing
+import asyncio
 import discord
 from discord.ext import commands
 
@@ -17,7 +19,7 @@ def read_token() -> str:
     return token
 
 
-def main():
+async def main():
 
     bot_kwargs: typing.Dict[str, typing.Any] = {
         "intents": discord.Intents.all(),
@@ -29,9 +31,14 @@ def main():
 
     token = read_token()
 
+    for cog in os.listdir("cogs"):
+        if cog.endswith(".py"):
+            print(f'Loading extension "{cog}"...')
+            await bot.load_extension("cogs." + cog.replace(".py", ""))
+
     print(read_logo())
-    bot.run(token)
+    await bot.start(token)
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
